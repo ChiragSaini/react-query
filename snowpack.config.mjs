@@ -1,5 +1,11 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
+  devOptions: {
+    port: 3000,
+    src: 'src',
+    bundle: false,
+    fallback: 'index.html',
+  },
   mount: {
     /* ... */
     // directory name: 'build directory'
