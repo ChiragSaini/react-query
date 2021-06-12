@@ -1,6 +1,11 @@
 {
+  "name": "react-snowpack",
+  "author": {
+    "name": "Chirag Saini",
+    "email": "chiragsaini7777@gmail.com"
+  },
   "scripts": {
-    "start": "snowpack dev",
+    "start": "snowpack dev --port 3000",
     "build": "snowpack build",
     "test": "echo \"This template does not include a test runner by default.\" && exit 1"
   },
