@@ -2,30 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import './App.css';
 
-const Button = () => {
-    const { data, error } = useQuery('hello-world', () => {
-        return new Promise(resolve => setTimeout(() => resolve(Math.random()), 1000))
-    });
-    console.log({ data, error });
-    return <button>I am a Button {data}</button>
+const fetcher = () => {
+    return new Promise(resolve => {
+        return setTimeout(resolve, 1000);
+    })
 }
-
 
 function App() {
 
-    const [visible, setVisible] = useState(true);
-    function toggleButton(){
-        setVisible(state => !state);
-    }
+    const [state, setState] = useState(false)
+
+    useQuery(['todo-single-item', 'item-1'], fetcher, {
+        enabled: state, // This enaled can be used as an dependency, if something is present then only enable this query toherwise not
+    })
 
     return (
         <div className="App">
             <header className="App-header">
-                {visible && <Button />}
-                <button onClick={toggleButton}>Toggle Button</button>
-                <p>
-                    Hello World
-                </p>
+                <div>State: {state}</div>
+                <button onClick={() => setState(state => !state)}>Toggle Button</button>
             </header>
         </div>
     );
