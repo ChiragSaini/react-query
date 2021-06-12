@@ -32,4 +32,5 @@ export default {
   buildOptions: {
     /* ... */
   },
+  plugins: [["@snowpack/plugin-webpack"]]
 };

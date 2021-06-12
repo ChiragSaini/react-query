@@ -13,7 +13,9 @@ function App() {
 
     const [postId, setPostId] = useState(null)
 
-    const { data: posts, isLoading } = useQuery('posts', () => fetcher('https://jsonplaceholder.typicode.com/posts'))
+    const { data: posts, isLoading } = useQuery('posts', () => fetcher('https://jsonplaceholder.typicode.com/posts'), {
+        select: result => result.slice(0, 5)
+    })
 
     if (postId) {
         return <Post postId={postId} goBack={() => setPostId(null)} />
