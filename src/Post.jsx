@@ -12,6 +12,8 @@ const Post = ({ postId, goBack }) => {
         return <h2>Loading Post...</h2>
     }
 
+    console.log({ data })
+
     return (
         <>
             <h2>PostId: {postId}</h2>
