@@ -2,30 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import './App.css';
 
-const Button = () => {
-    const { data, error } = useQuery('hello-world', () => {
-        return new Promise(resolve => setTimeout(() => resolve(Math.random()), 1000))
-    });
-    console.log({ data, error });
-    return <button>I am a Button {data}</button>
+const fetcher = (repo) => {
+    return fetch(`https://api.github.com/repos/${repo}`)
+        .then(res => res.json())
+        .catch(err => console.log(err))
 }
 
-
 function App() {
+    const [repoName, setRepoName] = useState('');
+    const { data, isLoading } = useQuery(['github-data', repoName], () => fetcher(repoName))
 
-    const [visible, setVisible] = useState(true);
-    function toggleButton(){
-        setVisible(state => !state);
-    }
 
     return (
         <div className="App">
             <header className="App-header">
-                {visible && <Button />}
-                <button onClick={toggleButton}>Toggle Button</button>
-                <p>
-                    Hello World
-                </p>
+                <input type='text' value={repoName} onChange={(e) => setRepoName(e.target.value)} />
+                {isLoading && <h2>Loading..</h2>}
+                {data && (
+                    <>
+                        <h2>Name: {data.name}</h2>
+                        <h2>Description: {data.description}</h2>
+                        <h2>Stars: {data.stargazers_count}</h2>
+                    </>
+                )}
             </header>
         </div>
     );
