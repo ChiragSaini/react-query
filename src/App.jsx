@@ -24,11 +24,12 @@ function App() {
         <div className="App">
             {isLoading && <h2>Loading...</h2>}
             {posts && posts.map(post => {
-                const cachedPosts = client.getQueryData(['post', post.id]);
+                const cachedPost = client.getQueryData(['post', post.id]);
                 return (
                     <div style={{ marginBottom: '10px' }} key={post.id}>
                         <p>
-                            <a onClick={() => setPostId(post.id)} href="#">{post.id}: {post.title}{cachedPosts ? '(visited)' : ''}</a>
+                            <b>{cachedPost ? '(visited)' : ''}</b>
+                            <a onClick={() => setPostId(post.id)} href="#">{post.id}: {post.title}</a>
                         </p>
                     </div>
                 )

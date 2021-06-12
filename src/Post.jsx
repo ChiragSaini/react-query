@@ -6,7 +6,9 @@ const fetcher = (url) => {
 }
 
 const Post = ({ postId, goBack }) => {
-    const { data, isLoading } = useQuery(['post', postId], () => fetcher(`https://jsonplaceholder.typicode.com/posts/${postId}`))
+    const { data, isLoading } = useQuery(['post', postId], () => fetcher(`https://jsonplaceholder.typicode.com/posts/${postId}`), {
+        cacheTime: 0
+    })
 
     if (isLoading) {
         return <h2>Loading Post...</h2>
