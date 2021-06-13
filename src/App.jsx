@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import Post from './Post';
 import './App.css';
 import { client } from './react-query-client';
@@ -9,44 +9,29 @@ const fetcher = (url) => {
     return fetch(url).then(res => res.json()).catch(err => console.log(err));
 }
 
+const timer = (duration) => new Promise((resolve, reject) => setTimeout(() => {
+    // resolve('yooooo');
+    reject('yoooooo')
+    console.log('I WAS RUN!!!!')
+}, duration))
+
 function App() {
 
-    const [postId, setPostId] = useState(null)
+    const mutation = useMutation(() => timer(1000), {
+        onSuccess: (data) => console.log('Success!!', data),
+        onError: (err) => console.log({ err })
+    })
 
-    const { data: posts, isLoading } = useQuery('posts', () => fetcher('https://jsonplaceholder.typicode.com/posts'))
-
-    if (postId) {
-        return <Post postId={postId} goBack={() => setPostId(null)} />
+    async function calMutation() {
+        console.log('about to call mutation');
+        await mutation.mutateAsync()
+        console.log('After Async')
     }
-
-    const mutateTitle = (id) => {
-        if (!client.getQueryData(['post', id])) return;
-        client.setQueryData(['post', id], oldData => {
-            if(oldData){
-                return {
-                    ...oldData,
-                    title: 'boom boom mutated'
-                }
-            }
-        })
-    }
-
 
     return (
         <div className="App">
-            {isLoading && <h2>Loading...</h2>}
-            {posts && posts.map(post => {
-                const cachedPost = client.getQueryData(['post', post.id]);
-                return (
-                    <div style={{ marginBottom: '10px' }} key={post.id}>
-                        <p>
-                            <b>{cachedPost ? '(visited)' : ''}</b>
-                            <a onClick={() => setPostId(post.id)} href="#">{post.id}: {post.title}</a>
-                            <button onClick={() => mutateTitle(post.id)}>Mutate the title</button>
-                        </p>
-                    </div>
-                )
-            })}
+            <h2>Mutations</h2>
+            <p onClick={calMutation}>Submit</p>
         </div >
     );
 }
